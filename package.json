@@ -1,0 +1,28 @@
+{
+  "name": "ta_veeb_jako",
+  "version": "1.0.0",
+  "description": "Tarkvaraarendajate veebiprogrammeerimise kursuse veeb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://jakopuu@github.com/jakopuu/Ta_veeb.git"
+  },
+  "keywords": [
+    "õppetöö",
+    "tallinna",
+    "ülikool",
+    "express.js"
+  ],
+  "author": "Jako Puusepp",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jakopuu/Ta_veeb/issues"
+  },
+  "homepage": "https://github.com/jakopuu/Ta_veeb#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
