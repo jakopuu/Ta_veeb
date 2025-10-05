@@ -3,6 +3,7 @@ const fs = require("fs");
 const dateET = require("./src/dateTimeET.js");
 const bodyparser = require("body-parser");
 const textRef = "public/txt/vanasonad.txt";
+const textRef2 = "public/txt/visitlog.txt"
 //k2ivitan express.js funktsiooni ja annan talle nime "app"
 const app = express();
 //m22ran veebilehtede mallide renderdamise mootorit
@@ -15,10 +16,13 @@ app.get("/", (req, res)=>{
 	res.render("index");
 });
 
-app.get("/timenow", (req, res) =>{
-	const weekDayNow = dateET.fullDate();
-res.render("timenow", {weekDayNow: weekDayNow,});
+app.get("/timenow", (req, res)=>{
+	const weekDayNow = dateET.weekDay();
+	const dateNow = dateET.fullDate();
+	const fullTime = dateET.fullTime();
+	res.render("timenow", {weekDayNow: weekDayNow, dateNow: dateNow, fullTime: fullTime });
 });
+
 app.get("/vanasonad", (req, res)=>{
 	let folkWisdom = [];
 	fs.readFile(textRef, "utf8", (err, data)=>{
@@ -38,6 +42,9 @@ app.get("/regvisit", (req, res)=>{
 });
 
 app.post("/regvisit", (req, res)=>{
+	const weekDayNow = dateET.weekDay();
+	const dateNow = dateET.fullDate();
+	const fullTime = dateET.fullTime();
 	console.log(req.body);
 	fs.open("public/txt/visitlog.txt", "a", (err, file)=>{
 		if(err){
@@ -45,7 +52,7 @@ app.post("/regvisit", (req, res)=>{
 		}
 		else {
 			//faili senisele sisule lisamine
-			fs.appendFile("public/txt/visitlog.txt", req.body.nameInput + "; ", (err)=>{
+			fs.appendFile("public/txt/visitlog.txt", req.body.firstNameInput +" "+ req.body.lastNameInput +" "+ " kell " +" "+ fullTime +" "+ weekDayNow +" "+ dateNow + ";", (err)=>{
 				if(err){
 					throw(err);
 				}
@@ -54,6 +61,19 @@ app.post("/regvisit", (req, res)=>{
 					res.render("regvisit");
 				}
 			});
+		}
+	});
+});
+
+app.get("/visitlog", (req, res)=>{
+	let visitHistory = [];
+	fs.readFile(textRef2, "utf8", (err, data)=>{
+		if(err){
+			res.render("visitlog",{heading: "Külastajate ajalugu", listData: ["ei leidnud ühtegi külastajat!"]});
+		}
+		else {
+			visitHistory = data.split(";");
+			res.render("visitlog",{heading: "Külastajate ajalugu", listData: visitHistory});
 		}
 	});
 });
