@@ -5,15 +5,20 @@
   <title>Jako Puusepp</title>
 </head>
 <body>
-  <img src="images/vp_banner_2025_TA.jpg" alt="kursuse bänner">
+  <img src="../images/vp_banner_2025_TA.jpg" alt="kursuse bänner">
   <h1> Jako Puusepp </h1>
   <p>See leht on loodud õppimise põhimõtetega <a href="https://www.tlu.ee">Tallinna Ülikoolis</a> ning pole tõsiselt võetava sisuga.</p>
   <hr>
   <ul>
   <li><a href="/">Avaleht</a></li>
-  <li><a href="/regvisit">Registreeri veel üks külastus</a></li>
+  <li><a href ="/Eestifilm">Eesti filmi avaleht</a></li>
   </ul>
   <hr>
-  <p><%= visitor %> külastus edukalt salvestatud!</p>
+  <h2>Eesti filmiinimesed</h2>
+  <ol>
+	<% personList.forEach(function(listItem){%>
+	<li><%= listItem.first_name%> <%= listItem.last_name%>, sündinud <%= listItem.born%></li>
+	<% }); %>
+  </ol>
 </body>
 </html>

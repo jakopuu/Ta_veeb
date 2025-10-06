@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+  <meta charset="utf-8">
+  <title>Jako Puusepp</title>
+</head>
+<body>
+  <img src="../images/vp_banner_2025_TA.jpg" alt="kursuse bänner">
+  <h1> Jako Puusepp </h1>
+  <p>See leht on loodud õppimise põhimõtetega <a href="https://www.tlu.ee">Tallinna Ülikoolis</a> ning pole tõsiselt võetava sisuga.</p>
+  <hr>
+  <ul>
+  <li><a href="/">Avaleht</a></li>
+  <li><a href ="/Eestifilm">Eesti filmi avaleht</a></li>
+  </ul>
+  <hr>
+  <h2>Eesti filmiinimesed</h2>
+ <form method="POST">
+	<label for="firstNameInput">Filmi tegelase eesnimi</label>
+	<input id="firstNameInput" type="text" name="firstNameInput" placeholder="Kirjuta siia tegelase eesnimi..." required>
+	<br>
+	<label for="lastNameInput">Filmi inimese perekonnanimi</label>
+	<input id="lastNameInput" type="text" name="lastNameInput" placeholder="Kirjuta siia tegelase perenimi..." required>
+	<br>
+	<label for="bornInput">Filmiinimese sünniaeg</label>
+	<input id="bornInput" name="bornInput" type="date" required>
+	<br>
+	<label for="deceasedInput">Filmiinimese surmaaeg</label>
+	<input id="deceasedInput" name="deceasedInput" type="date" >
+	<br>
+	<input id="personSubmit" type="submit" name="personSubmit" value="Salvesta">
+  </form>
+  <p>Staatus: <%= notice %></p>
+</body>
+</html>
