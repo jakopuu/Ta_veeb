@@ -98,7 +98,7 @@ const position = async (req, res) => {
     const sqlReq = "SELECT * FROM position"; // teeb SQL päringu minu andmebaasile, tavalised SQL commandid
     try {
         conn = await mysql.createConnection(dbConf);
-        console.log(sqlReq);
+        console.log("Ühendus loodud!");
         const [rows, fields] = await conn.execute(sqlReq); // saadab selle ülevalpool nimetatud asja (sqlReq const) välja, salvestab selle massiivi! rows ja fields, kuna tegemist on SELECT käsuga
         res.render("film_positions", { positionList: rows });
     }
@@ -124,7 +124,7 @@ const filmPositionAddPost = async (req, res) => { // võtab info ja saada POSTi
     let sqlReq = "INSERT INTO position (position_name, description) VALUES (?, ?)"; // küsimärgid märgivad saadetavaid andmeid, nii palju kui vajalikke andmeid, nii palju küsimärke
     try {
         conn = await mysql.createConnection(dbConf);
-        console.log("DB ühendus loodud!");
+        console.log("Ühendus loodud!");
         const [result] = await conn.execute(sqlReq, [req.body.positionInput, req.body.positionDescriptionInput]); // kuna tuleb palju andmeid tagasi, siis on result massiiv
         console.log("Salvestati kirje: " + result.insertId); // saame teada selle äsja lisatud kirje ID
         await res.redirect("/Eestifilm/film_positions");
@@ -145,12 +145,12 @@ const movies = async (req, res) => {
     const sqlReq = "SELECT * FROM movie";
     try {
         conn = await mysql.createConnection(dbConf);
-        console.log(sqlReq);
+        console.log("Ühendus loodud!");
         const [rows, fields] = await conn.execute(sqlReq);
         res.render("movies", { movieList: rows });
     }
     catch (err) {
-        console.error("SQL query error:", err);
+        console.error("ERROR!", err);
         res.render("movies", { movieList: [] });
 
     }
@@ -167,27 +167,27 @@ const moviesGet = (req, res) => { // näitab tühja form-i
     res.render("movies_add", { notice: "Ootan sisestust!" });
 }
 
-const movieAddPost = async (req, res) => { // võtab info ja saada POSTi
+const movieAddPost = async (req, res) => { 
     console.log(req.body);
     let movieDescription = null;
-    let conn; // connection
-    let sqlReq = "INSERT INTO movie (title, production_year, duration, description) VALUES (?, ?, ?, ?)"; // küsimärgid märgivad saadetavaid andmeid, nii palju kui vajalikke andmeid, nii palju küsimärke
+    let conn;
+    let sqlReq = "INSERT INTO movie (title, production_year, duration, description) VALUES (?, ?, ?, ?)"; 
     try {
         conn = await mysql.createConnection(dbConf);
-        console.log("DB ühendus loodud!");
+        console.log("Ühendus loodud!");
         if (req.body.movieDescription != "") {
             movieDescription = req.body.movieDescriptionInput;
         }
-        const [result] = await conn.execute(sqlReq, [req.body.movieNameInput, req.body.movieProductionYearInput, req.body.movieLengthInput, req.body.movieDescriptionInput]); // kuna tuleb palju andmeid tagasi, siis on result massiiv
-        console.log("Salvestati kirje: " + result.insertId); // saame teada selle äsja lisatud kirje ID
+        const [result] = await conn.execute(sqlReq, [req.body.movieNameInput, req.body.movieProductionYearInput, req.body.movieLengthInput, req.body.movieDescriptionInput]); 
+        console.log("Salvestati kirje: " + result.insertId); 
         await res.redirect("/Eestifilm/movies");
     }
     catch (err) {
         throw (err);
     }
     finally {
-        if (conn) { // kui ühendus ON olemas:
-            await conn.end(); // closes the DB connection
+        if (conn) { 
+            await conn.end(); 
             console.log("Ühendus on suletud!");
         }
     }
