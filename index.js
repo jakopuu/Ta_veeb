@@ -53,9 +53,6 @@ app.get("/regvisit", (req, res)=>{
 });
 
 app.post("/regvisit", (req, res)=>{
-	const weekDayNow = dateET.weekDay();
-	const dateNow = dateET.fullDate();
-	const fullTime = dateET.fullTime();
 	console.log(req.body);
 	fs.open("public/txt/visitlog.txt", "a", (err, file)=>{
 		if(err){

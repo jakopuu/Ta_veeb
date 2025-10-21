@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+  <meta charset="utf-8">
+  <title>Jako Puusepp</title>
+</head>
+<body>
+  <img src="images/vp_banner_2025_TA.jpg" alt="kursuse bänner">
+  <h1> Jako Puusepp </h1>
+  <p>See leht on loodud õppimise põhimõtetega <a href="https://www.tlu.ee">Tallinna Ülikoolis</a> ning pole tõsiselt võetava sisuga.</p>
+  <hr>
+  <ul>
+  <li><a href="/">Avaleht</a></li>
+  </ul>
+  <hr>
+  <h2> Uue filmi lisamine </h2>
+
+  <form method="POST">
+    <label for="movieNameInput"> Filmi nimi </label>
+    <input id="movieNameInput" name="movieNameInput" type="text" placeholder="Filmi nimi" required>
+    <br>
+    <label for="movieProductionYearInput">Filmi valmimise aasta</label>
+    <input id="movieProductionYearInput" name="movieProductionYearInput" type="text" placeholder="Filmi valmimise aasta" required>
+    <br>
+    <label for="movieLengthInput">Filmi pikkus (minutites)</label>
+    <input id="movieLengthInput" name="movieLengthInput" type="text" placeholder="Filmi pikkus (minutites)" required>
+    <br>
+    <label for="movieDescriptionInput"> Filmi lühikirjeldus </label>
+    <textarea id="movieDescriptionInput" name="movieDescriptionInput" cols="100" rows="5" placeholder="Filmi lühikirjeldus" required> </textarea>  
+    <br>
+    <input id="positionSubmit" name="positionSubmit" type="submit" value="Salvesta film andmebaasi">
+  </form>
+</body>
+</html>
