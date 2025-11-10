@@ -13,7 +13,8 @@ const app = express();
 app.set("view engine", "ejs");
 //m22ran yhe p2ris kataloogi avalikult k2ttesaadavaks
 app.use(express.static("public"));
-app.use(bodyparser.urlencoded({extended: false}));
+//kui tuleb vormist ainult tekst siis false aga kui muud siis true
+app.use(bodyparser.urlencoded({extended: true}));
 
 /*const dbConf = {
 	host: dbInfo.configData.host,
@@ -46,6 +47,27 @@ app.get("/vanasonad", (req, res)=>{
 		}
 	});
 });
+app.get("/", async (req, res) => {
+    let conn;
+    let sqlReq = "SELECT filename, alttext FROM galleryphotos WHERE id=(SELECT MAX(id) FROM galleryphotos WHERE privacy=? AND deleted IS NULL)";
+    const privacy = 3;
+    try {
+        conn = await mysql.createConnection(dbConfig);
+        const [rows] = await conn.execute(sqlReq, [privacy])
+        console.log(rows);
+        res.render("index", { photoList: rows }); 
+    }
+    catch(err) {
+        console.log("ERROR!" + err);
+        res.render("index", { photoList: [] });
+    }
+    finally {
+        if (conn) { 
+            await conn.end(); 
+            console.log("Ühendus on suletud!");
+        }
+    }
+})
 
 app.get("/regvisit", (req, res)=>{
 	
@@ -89,6 +111,12 @@ app.get("/visitlog", (req, res)=>{
 		}
 	});
 });
+
+//galerii fotode üleslaadimine
+
+const fotoupRouter =require("./routes/fotoupRoutes");
+app.use("/galleryfotoupload", fotoupRouter);
+
 
 
 //Eesti filmi marsuudid 
