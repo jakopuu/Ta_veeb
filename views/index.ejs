@@ -16,14 +16,10 @@
   <li><a href="/visitlog">Külastajate ajalugu</a></li>
     <li><a href="/Eestifilm">Eesti film</a></li>
 	<li><a href="/galleryfotoupload">Galeriise fotode üleslaadimine</a></li>
+	<li><a href="/fotogallery">Foto galerii</a></li>
   </ul>
     <h1> Viimati üleslaetud avalik foto</h1>
-  <% if (photoList && photoList.length> 0) { %>
-    <% const photo=photoList[0]; %>
-      <img src="/gallery/normal/<%= photo.filename %>" alt="<%= photo.alt_text %>" style="max-width:400px;">
-      <% } else { %>
-        <p>Ühtegi fotot pole veel üles laaditud.</p>
-        <% } %>
+  <img src="/gallery/normal/<%= photoName %>" alt="Hiljutiseim pilt">
 		
 </body>
 </html>

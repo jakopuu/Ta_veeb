@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+  <meta charset="utf-8">
+  <title>Jako Puusepp</title>
+  <link rel="stylesheet" href="/style/gallery.css" >
+  <script src="/script/gallery.js" defer></script>
+</head>
+<body>
+  <img src="images/vp_banner_2025_TA.jpg" alt="kursuse bänner">
+  <h1> Jako Puusepp </h1>
+  <p>See leht on loodud õppimise põhimõtetega <a href="https://www.tlu.ee">Tallinna Ülikoolis</a> ning pole tõsiselt võetava sisuga.</p>
+  <hr>
+  <ul>
+  <li><a href="/">Avaleht</a></li>
+  </ul>
+  <hr>
+  <!-- dialoogiaken normaal fotode n2itamiseks-->
+  <dialog id="modal" class="modalarea">
+	<span id="modalclose" class="modalclose">&times;</span>
+	<div class="modalhorizontal">
+	 <div class="modalvertical">
+		<p id="modalCaption"></p>
+		<img id="modalImage" src="/images/empty.png" alt="galeriipilt">
+	 </div>
+	</div>
+  </dialog>
+  <div id="gallery" class = "gallery">
+	<h1> Fotogalerii</h1>
+	<% galleryData.forEach(function(image){ %>
+    <img src="<%=imagehref%><%=image.src%>" alt="<%=image.alt%>" class = "thumbs" data-filename="<%=image.src%>">
+  <% }); %>
+  </div>
+</body>
+</html>

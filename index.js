@@ -2,6 +2,8 @@ const express = require("express");
 const fs = require("fs");
 const dateET = require("./src/dateTimeET.js");
 const bodyparser = require("body-parser");
+const dbInfo = require("../../vp2025config");
+const mysql = require("mysql2/promise");
 //Kuna kasutame asünkroonsust, siis impordime mysql2/promise mooduli
 //const mysql = require("mysql2/promise");
 //const dbInfo = require("../../vp2025config");
@@ -16,13 +18,33 @@ app.use(express.static("public"));
 //kui tuleb vormist ainult tekst siis false aga kui muud siis true
 app.use(bodyparser.urlencoded({extended: true}));
 
-/*const dbConf = {
+const dbConf = {
 	host: dbInfo.configData.host,
 	user: dbInfo.configData.user,
 	password: dbInfo.configData.passWord,
 	database: "if25_jakopuu"
-};*/
+};
 
+app.get("/", async (req, res) => {
+  let conn;
+  const sqlLatestPublic = "SELECT filename, alttext FROM gallery_fotos WHERE id=(SELECT MAX(id) FROM gallery_fotos WHERE privacy=? AND deleted IS NULL)";
+
+  try {
+    conn = await mysql.createConnection(dbConf);
+    const [rows] = await conn.execute(sqlLatestPublic, [3]);
+    const photoName = rows.length ? rows[0].filename : null;
+	
+	res.render("index", { photoName });
+  } catch (err) {
+    console.error(err);
+    res.render("index", { photoName: null });
+  } finally {
+    if (conn) {
+      await conn.end();
+      console.log("Ühendus on suletud!");
+    }
+  }
+});
 app.get("/", (req, res)=>{
 	//res.send("Express.js l2ks k2ima ja serveerib veebi!");
 	res.render("index");
@@ -47,27 +69,6 @@ app.get("/vanasonad", (req, res)=>{
 		}
 	});
 });
-app.get("/", async (req, res) => {
-    let conn;
-    let sqlReq = "SELECT filename, alttext FROM galleryphotos WHERE id=(SELECT MAX(id) FROM galleryphotos WHERE privacy=? AND deleted IS NULL)";
-    const privacy = 3;
-    try {
-        conn = await mysql.createConnection(dbConfig);
-        const [rows] = await conn.execute(sqlReq, [privacy])
-        console.log(rows);
-        res.render("index", { photoList: rows }); 
-    }
-    catch(err) {
-        console.log("ERROR!" + err);
-        res.render("index", { photoList: [] });
-    }
-    finally {
-        if (conn) { 
-            await conn.end(); 
-            console.log("Ühendus on suletud!");
-        }
-    }
-})
 
 app.get("/regvisit", (req, res)=>{
 	
@@ -112,16 +113,17 @@ app.get("/visitlog", (req, res)=>{
 	});
 });
 
+
 //galerii fotode üleslaadimine
 
 const fotoupRouter =require("./routes/fotoupRoutes");
 app.use("/galleryfotoupload", fotoupRouter);
 
-
-
 //Eesti filmi marsuudid 
 const eestiFilmRoutes = require("./routes/eestiFilmRoutes");
 app.use ("/Eestifilm", eestiFilmRoutes);
 
+const galleryRouter = require("./routes/fotogalRoutes");
+app.use("/fotogallery", galleryRouter);
 
 app.listen(5107);
