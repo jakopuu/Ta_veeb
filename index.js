@@ -126,4 +126,9 @@ app.use ("/Eestifilm", eestiFilmRoutes);
 const galleryRouter = require("./routes/fotogalRoutes");
 app.use("/fotogallery", galleryRouter);
 
+
+//konto loomise marsruudid
+const signupRouter = require("./routes/signupRoutes");
+app.use("/signup", signupRouter);
+
 app.listen(5107);

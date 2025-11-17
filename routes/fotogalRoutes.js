@@ -3,9 +3,12 @@ const express = require("express");
 const router = express.Router();
 
 //kontrollerid
-const {galleryHome} = require("../controllers/fotogalleryController");
+const {galleryHome,
+		galleryPage} = require("../controllers/fotogalleryController");
 
 router.route("/").get(galleryHome);
+
+router.route("/:page").get(galleryPage);
 
 module.exports = router;
 
