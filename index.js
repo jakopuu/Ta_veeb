@@ -3,14 +3,15 @@ const fs = require("fs");
 const dateET = require("./src/dateTimeET.js");
 const bodyparser = require("body-parser");
 const dbInfo = require("../../vp2025config");
+const loginCheck = require("./src/checklogin");
 const mysql = require("mysql2/promise");
+const session = require("express-session");
 //Kuna kasutame asünkroonsust, siis impordime mysql2/promise mooduli
-//const mysql = require("mysql2/promise");
-//const dbInfo = require("../../vp2025config");
 const textRef = "public/txt/vanasonad.txt";
 const textRef2 = "public/txt/visitlog.txt"
 //k2ivitan express.js funktsiooni ja annan talle nime "app"
 const app = express();
+app.use(session({secret: dbInfo.configData.sessionSecret, saveUninitialized: true, resave: true}));
 //m22ran veebilehtede mallide renderdamise mootorit
 app.set("view engine", "ejs");
 //m22ran yhe p2ris kataloogi avalikult k2ttesaadavaks
@@ -113,6 +114,18 @@ app.get("/visitlog", (req, res)=>{
 	});
 });
 
+app.get("/home", loginCheck.isLogin, (req,res)=>{
+	console.log("Sisse logis kasutaja " + req.session.userId);
+	res.render("home", {user: req.session.firstName + " " + req.session.lastName});
+});
+
+//v2lja logimine
+app.get("/logout", (req,res)=>{
+	//tyhistame sessiooni
+	req.session.destroy();
+	console.log("v2lja logitud");
+	res.redirect("/");
+});
 
 //galerii fotode üleslaadimine
 
@@ -126,9 +139,15 @@ app.use ("/Eestifilm", eestiFilmRoutes);
 const galleryRouter = require("./routes/fotogalRoutes");
 app.use("/fotogallery", galleryRouter);
 
+//const newsRouter = require("./routes/newsRoutes");
+//app.use("/news", newsRouter);
 
 //konto loomise marsruudid
 const signupRouter = require("./routes/signupRoutes");
 app.use("/signup", signupRouter);
+
+//sisse logimise marsuudid
+const signinRouter = require("./routes/signinRoutes");
+app.use("/signin", signinRouter);
 
 app.listen(5107);

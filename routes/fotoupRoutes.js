@@ -1,8 +1,12 @@
 const express =  require("express");
 const multer = require("multer");
 const router = express.Router();
+const loginCheck = require("../src/checklogin");
 //seadistame vahevara fotode yleslaadimiseks kindlasse kataloogi
+router.use(loginCheck.isLogin);
 const uploader = multer({dest: "./public/gallery/orig/"});
+
+
 
 const {
 	fotouploadPage,

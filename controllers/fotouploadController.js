@@ -37,7 +37,7 @@ const fotouploadPagePost = async (req, res) => {// võtab info ja saada POSTi
 		conn = await mysql.createConnection(dbConf);
 		let sqlReq = "INSERT INTO gallery_fotos (filename, origname, alttext, privacy, userid) VALUES (?,?,?,?,?)";
 		//kuna kasutajakontosid pole, määrame userid = 1
-		const userid = 1;
+		const userid = req.session.userId;
 		const [result] = await conn.execute(sqlReq, [fileName, req.file.originalname, req.body.altInput, req.body.privacyInput, userid]);
 		res.render("galleryfotoupload");
 	}
